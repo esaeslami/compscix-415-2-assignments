@@ -1,4 +1,6 @@
 ---
+author: Esa Eslami
+date: 6/11/2018
 title: "COMPSCIX 415.2 Homework 1"
 output: html_document
 ---
@@ -7,22 +9,32 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+My Github repository for my assignments can be found at this URL: [https://github.com/esaeslami/compscix-415-2-assignments](https://github.com/esaeslami/compscix-415-2-assignments)
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{r load_packages, warning=FALSE, message=FALSE}
+library(mdsr)
+library(tidyverse)
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+data("WorldCities")
+glimpse(WorldCities)
 ```
 
-## Including Plots
+*__QUESTION 1:__ How many observations and variables are there in this data set? What are some of the variable names? Type up your answer in your document using complete sentences.*
 
-You can also embed plots, for example:
+**ANSWER 1:** There are 23,018 observations and 10 variables in the "WorldCities" data set. The 10 variable names are: code, name, latitude, longitude, country, countryRegion, population, regionCode, region, and date.
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+__Extract parts of the data (*EXAMPLE*)__
+
+```{r Q1 example, warning=FALSE, message=FALSE}
+WorldCities <- head(WorldCities, 200) # 200 rows
+country_col <- WorldCities$country
+unique(country_col)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+*__QUESTION 2:__ There is a column called region in the data set. Can you extract this and show only the unique values?*
+
+**ANSWER 2:** 
+```{r Q2, warning=FALSE, message=FALSE}
+region_col <- WorldCities$region
+unique(region_col)
+```
