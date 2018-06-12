@@ -14,7 +14,9 @@ My Github repository for my assignments can be found at this URL: [https://githu
 ```{r load_packages, warning=FALSE, message=FALSE}
 library(mdsr)
 library(tidyverse)
+```
 
+```{r load_data, warning=FALSE, message=FALSE}
 data("WorldCities")
 glimpse(WorldCities)
 ```
@@ -25,7 +27,7 @@ glimpse(WorldCities)
 
 __Extract parts of the data (*EXAMPLE*)__
 
-```{r Q1 example, warning=FALSE, message=FALSE}
+```{r basic extract example, warning=FALSE, message=FALSE}
 WorldCities <- head(WorldCities, 200) # 200 rows
 country_col <- WorldCities$country
 unique(country_col)
@@ -34,7 +36,56 @@ unique(country_col)
 *__QUESTION 2:__ There is a column called region in the data set. Can you extract this and show only the unique values?*
 
 **ANSWER 2:** 
-```{r Q2, warning=FALSE, message=FALSE}
+```{r Answer 2, warning=FALSE, message=FALSE}
 region_col <- WorldCities$region
 unique(region_col)
 ```
+
+__Extract/select data the tidy way (*EXAMPLE*)__
+```{r tidy extract example, warning=FALSE, message=FALSE}
+country_col <- select(WorldCities, country)
+country_col <- WorldCities %>% select(country)
+WorldCities %>% select(region) %>% head(5)
+```
+
+*__QUESTION 3:__ Can you extract and show the unique entries from the country column in WorldCities using one line of code and two %>% operators? The output will look like this:*
+```{r Question 3, warning=FALSE, message=FALSE}
+## country
+## 1 AD
+## 3 AE
+## 15 AF
+## 65 AG
+## 66 AI
+## 67 AL
+## 87 AM
+## 104 AO
+## 131 AR
+```
+
+**ANSWER 3:** 
+```{r Answer 3, warning=FALSE, message=FALSE}
+WorldCities %>% select(country) %>% unique()
+```
+
+__Create a visualization (*EXAMPLE*)__
+```{r example histogram, warning=FALSE, message=FALSE}
+WorldCities %>% ggplot(aes(x = population)) +
+geom_histogram()
+```
+
+*__QUESTION 4:__ Make one more histogram of the population and add a new x-label, a new ylabel, a new title (use ggtitle('my title')), and change the theme of the plot using theme_bw().*
+
+```{r Answer 4, warning=FALSE, message=FALSE}
+WorldCities %>% ggplot(aes(x = population)) +
+  geom_histogram() +
+  xlab("City Population") +
+  ylab("Count") +
+  ggtitle('World City Populations') +
+  theme_bw()
+```
+
+
+
+
+
+
