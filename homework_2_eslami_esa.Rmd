@@ -1,0 +1,69 @@
+---
+author: Esa Eslami
+date: 6/18/2018
+title: "COMPSCIX 415.2 Homework 2"
+output: html_document
+self-contained: true
+---
+
+```{r load_packages, warning=FALSE, message=FALSE, echo=FALSE}
+library(tidyverse)
+```
+
+* * * 
+
+####__Homework 2 Assignments:__####
+__Complete these Exercises in R for Data Science:__  
+1. Section 3.2.4: all exercises  
+2. Section 3.3.1: all exercises  
+3. Section 3.5.1: #4 and #5 only  
+4. Section 3.6.1: #1-5. Extra Credit: Do #6  
+5. Section 3.7.1: #2 only  
+
+* * * 
+
+####3.2.4 Exercises:####
+
+*1. Run ggplot(data = mpg). What do you see?*
+__ANSWER:__ ggplot(data = mpg) produces an empty graph:
+```{r 3_2_4_exercises1, warning=FALSE, message=FALSE}
+ggplot(data = mpg)
+```
+- - - 
+
+*2. How many rows are in mpg? How many columns?*
+
+```{r 3_2_4_exercises2, warning=FALSE, message=FALSE, echo=FALSE, eval=FALSE}
+glimpse(mpg)
+```
+
+__ANSWER:__ There are 234 observations (rows) and 11 variables (columns) in the mpg data set.
+
+- - - 
+
+*3. What does the drv variable describe? Read the help for ?mpg to find out.*
+
+__ANSWER:__ The drv variable describes whether a car is front-wheel drive (coded as f), rear wheel drive (coded as r), or 4wd (coded as 4).
+
+- - - 
+
+*4. Make a scatterplot of hwy vs cyl.*
+
+__ANSWER:__ 
+```{r 3_2_4_exercises4, warning=FALSE, message=FALSE}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = hwy, y = cyl))
+```
+
+- - - 
+
+*5. What happens if you make a scatterplot of class vs drv? Why is the plot not useful?*
+
+__ANSWER:__ class and drv are both categorical variables, so a scatterplot does not give a useful visual in the same way that it would were the variables numeric.
+```{r 3_2_4_exercises5, warning=FALSE, message=FALSE, echo=FALSE}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = class, y = drv))
+```
+
+- - - 
+
