@@ -14,11 +14,16 @@ library(tidyverse)
 
 ####__Homework 2 Assignments:__####
 __Complete these Exercises in R for Data Science:__  
+
 1. Section 3.2.4: all exercises  
 2. Section 3.3.1: all exercises  
 3. Section 3.5.1: #4 and #5 only  
 4. Section 3.6.1: #1-5. Extra Credit: Do #6  
 5. Section 3.7.1: #2 only  
+
+__Review infographic__
+
+6. Review data graphics and answer questions
 
 * * * 
 
@@ -135,4 +140,102 @@ ggplot(data = mpg) +
   geom_point(mapping = aes(x = cty, y = cty, color = displ < 5))
 ```
 
+- - - 
+
+####3.5.1 Exercises:####
+
+*4. Take the first faceted plot in this section:*
+```{r 3_5_1_exercises4, warning=FALSE, eval=FALSE}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_wrap(~ class, nrow = 2)
+
+```
+
+*What are the advantages to using faceting instead of the colour aesthetic? What are the disadvantages? How might the balance change if you had a larger dataset?*
+
+__ANSWER:__ Because there are 7 classes, using faceting makes it easier to clearly see the points for each class, whereas coloring may have made it difficult. The disadvantage is that it's less obvious how the different classes vary since they are not on the same plot. Given a larger data set, I would still prefer multiple facets assuming we have 7 comparison groups. However, I think if you were to group the classes into three similar groups (say small cars: 2seater, compact, and subcompact; family car: midsize and minivan; and large car: pickup and suv), then you could create three plots and use color to distinguish between groups.
+
+- - - 
+
+*5. Read ?facet_wrap. What does nrow do? What does ncol do? What other options control the layout of the individual panels? Why doesn’t facet_grid() have nrow and ncol argument?*
+
+__ANSWER:__ nrow defines the number of rows and ncol defines the number of columns, where nrow times ncol must be greater than or equal to the number of facets. 
+
+strip.position allows you to place the labels on either of the four sides (default is the top); dir defines the direction that facets are placed (default is "h" for horizontal). 
+
+facet_grid() does not allow you to define rows and columns because by definition the panels are defined by the row and column facetting variables.  
+
+- - - 
+
+####3.6.1 Exercises:####
+
+*1. What geom would you use to draw a line chart? A boxplot? A histogram? An area chart?*
+
+__ANSWER:__ geom_line() for a line chart; geom_boxplot() for a boxplot; geom_histogram() for a histogram; and geom_area() for an area chart.
+
+- - -
+
+*2. Run this code in your head and predict what the output will look like. Then, run the code in R and check your predictions.*
+```{r 3_6_1_exercises2, warning=FALSE, eval=FALSE}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color = drv)) + 
+  geom_point() + 
+  geom_smooth(se = FALSE)
+```
+
+__PREDICTION:__ This will produce a smoothed scatterplot.
+
+__CHECK ON PREDICTION:__ Mostly correct. geom_smooth() added a smoothed line by drv.
+
+- - -
+
+*3. What does show.legend = FALSE do? What happens if you remove it? Why do you think I used it earlier in the chapter?*
+
+__ANSWER:__ show.legend determines if the geom_smooth() layer is included in the legend. I think the legend was excluded from an earlier example because the goal was to show three different versions of a similar plot, and adding a legent to the third would throw off the balance and distract from the point.
+
+- - -
+
+*4. What does the se argument to geom_smooth() do?*
+
+__ANSWER:__ se displays confidence intervals around smoothed line.  
+
+- - -
+
+*5. Will these two graphs look different? Why/why not?*
+
+```{r 3_6_1_exercises5, warning=FALSE, eval=FALSE}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point() + 
+  geom_smooth()
+
+ggplot() + 
+  geom_point(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_smooth(data = mpg, mapping = aes(x = displ, y = hwy))
+```
+
+__PREDICTION:__ No, they will look the same. The first one is a more efficient way of coding the second so you don't have to repeat code.
+
+__CHECK ON PREDICTION:__ Correct.
+
+- - -
+
+####3.7.1 Exercises:####
+
+*2. What does geom_col() do? How is it different to geom_bar()*
+
+__ANSWER:__ geom_bar() and geom_col() are very similar, with the only difference being what the height o the bars represents. For geom_bar(), the height of the bar is proportional to the number of cases in each group; for geom_col, the height of the bars to represent values in the data. 
+
+- - -
+
+####Review Infographic:####
+
+*Please briefly critique the designer’s choices. What works? What doesn’t work? What would you have done differently?*
+
+__ANSWER:__ 
+
+1. Several figures could have been better suited to create clearer distinctions between groups. For example, the donut chart at the top is presented to back up the statement "over 2/3 believe demand for talent...", however the graphic does not clearly back this up (nevermind that 31% + 32% < 66%). This statement could be more clearly backed up by a figure showing two groups: respondents who believe demand for talent will outpace supply, and those who don't. Instead, the donut graph forces the reader to do that (or, more likely, simply take the claim at face value and move on).
+
+2. Color choices could also be btter. The colors used for many figures draw the readers eye away from the group of interest. For example, in the BI versus data scientist bar charts by degree, the more vibrant color (blue) is used for the comparison group (BI), while data scientists are shown in black and stand out less. A light gret for BI and a bright color for data scientist would more better highlight the data scientist group.
+
+3. Overall I think the graphic design is well laid out and could impress at first glance, but several of the figures or graphics are difficult to decipher and a reader is left to take many of the statements for granted and assume the figure somehow backs it up. Running the presentation by a data scientist skilled in data visualization could have helped.
 
