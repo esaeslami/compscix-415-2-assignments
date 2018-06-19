@@ -98,9 +98,41 @@ glimpse(mpg)
 *3. Map a continuous variable to color, size, and shape. How do these aesthetics behave differently for categorical vs. continuous variables?*
 
 __ANSWER:__ ggplot() will give an error if you try to map a continuous variable to shape. However, it will allow you to map continuous variables to color and size:
-```{r 3_3_1_exercises3_2, warning=FALSE, message=FALSE}
+```{r 3_3_1_exercises3, warning=FALSE, message=FALSE}
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy, color = cty, size = cyl))
 ```
 
 Color and size behave differently for categorical vs. continuous variables in that they are easier to distinguish for categorical variables. For continuous variables, color and size vary more at extremes.
+
+- - - 
+
+*4. What happens if you map the same variable to multiple aesthetics?*
+
+__ANSWER:__ ggplot() will not stop you from mapping the same variable to multiple aesthetics:
+```{r 3_3_1_exercises4, warning=FALSE, message=FALSE}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = cty, y = cty, color = cty, size = cty))
+```
+
+- - - 
+
+*5. What does the stroke aesthetic do? What shapes does it work with? (Hint: use ?geom_point)*
+
+__ANSWER:__ stroke increases the thickness of the border around dots in geom_point. It works with all shapes, but can make it difficult to distinguish between some shapes:
+```{r 3_3_1_exercises5, warning=FALSE, message=FALSE}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = cty, y = cty, shape = class, stroke = 3))
+```
+
+- - - 
+
+*6. What happens if you map an aesthetic to something other than a variable name, like aes(colour = displ < 5)?*
+
+__ANSWER:__ ggplot() allows you to map conditions to aesthetics, like this:
+```{r 3_3_1_exercises6, warning=FALSE, message=FALSE}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = cty, y = cty, color = displ < 5))
+```
+
+
