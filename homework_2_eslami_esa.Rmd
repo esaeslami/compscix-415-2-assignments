@@ -25,10 +25,12 @@ __Complete these Exercises in R for Data Science:__
 ####3.2.4 Exercises:####
 
 *1. Run ggplot(data = mpg). What do you see?*
+
 __ANSWER:__ ggplot(data = mpg) produces an empty graph:
 ```{r 3_2_4_exercises1, warning=FALSE, message=FALSE}
 ggplot(data = mpg)
 ```
+
 - - - 
 
 *2. How many rows are in mpg? How many columns?*
@@ -60,6 +62,7 @@ ggplot(data = mpg) +
 *5. What happens if you make a scatterplot of class vs drv? Why is the plot not useful?*
 
 __ANSWER:__ class and drv are both categorical variables, so a scatterplot does not give a useful visual in the same way that it would were the variables numeric.
+
 ```{r 3_2_4_exercises5, warning=FALSE, message=FALSE, echo=FALSE}
 ggplot(data = mpg) +
   geom_point(mapping = aes(x = class, y = drv))
@@ -67,3 +70,37 @@ ggplot(data = mpg) +
 
 - - - 
 
+####3.3.1 Exercises:####
+
+*1. What’s gone wrong with this code? Why are the points not blue?*
+```{r 3_3_1_exercises1_1, warning=FALSE, message=FALSE}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = "blue"))
+```
+
+__ANSWER:__ color needs to be outside of the aes(), like this: 
+```{r 3_3_1_exercises1_2, warning=FALSE, message=FALSE}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy), color = "blue")
+```
+
+- - - 
+
+*2. Which variables in mpg are categorical? Which variables are continuous? (Hint: type ?mpg to read the documentation for the dataset). How can you see this information when you run mpg?*
+
+__ANSWER:__ manufacturer, model, trans, drv, fl, and class are categorical. displ, year, cyl, cty, and hwy are continuous. You can see this information with glimpse():
+```{r 3_3_1_exercises2, warning=FALSE, message=FALSE}
+glimpse(mpg)
+```
+
+- - - 
+
+*3. Map a continuous variable to color, size, and shape. How do these aesthetics behave differently for categorical vs. continuous variables?*
+
+__ANSWER:__ ggplot() will give an error if you try to map a continuous variable to shape. However, it will allow you to map continuous variables to color and size:
+```{r 3_3_1_exercises3_2, warning=FALSE, message=FALSE}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = cty, size = cyl))
+```
+
+Color and size behave differently for categorical vs. continuous variables in that they are easier to distinguish for categorical variables. For continuous variables, color and size vary more at extremes.
