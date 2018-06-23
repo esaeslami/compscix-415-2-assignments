@@ -26,7 +26,7 @@ __Complete these Exercises in R for Data Science:__
 
 ####3.8.1 Exercises:####
 
-*Question 1.*
+*1. What is the problem with this plot? How could you improve it?*
 
 __ANSWER:__ Like the hwy by displ example plot in this section, plotting hwy against cty results in a lot of overlapping points. You could improve the plot by using the position = "jitter" option, like this:
 
@@ -37,19 +37,19 @@ ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
 
 - - - 
 
-*Question 2. *
+*2. What parameters to geom_jitter() control the amount of jittering?*
 
 __ANSWER:__ The width and height parameters for geom_jitter() control the amount of jittering.
 
 - - - 
 
-*Question 3. *
+*3. Compare and contrast geom_jitter() with geom_count().*
 
 __ANSWER:__ geom_jitter() is a useful shortcut when you know you will have overlapping points and don't want to add the position = "jitter" option to geom_point(). geom_count, on the other hand, visualizes the amount of overlap at each position by increasing the area of points with overlap. geom_count() therefore is more useful when you care about highlighting overlap, while geom_jitter() is more of a programming shortcut.
 
 - - - 
 
-*Question 4. *
+*4. What’s the default position adjustment for geom_boxplot()? Create a visualisation of the mpg dataset that demonstrates it.*
 
 __ANSWER:__ The default position adjustment for geom_boxplot() is position = "dodge":
 
@@ -62,13 +62,13 @@ ggplot(data = mpg, mapping = aes(x = displ, y = cty)) +
 
 ####3.9.1 Exercises:####
 
-*2. *
+*2. What does labs() do? Read the documentation.*
 
 __ANSWER:__ labs() allows you to define the x label, y label, and title(s) of a plot.
 
 - - - 
 
-*4. *
+*4. What does the plot below tell you about the relationship between city and highway mpg? Why is coord_fixed() important? What does geom_abline() do?*
 
 __ANSWER:__ The plot below shows that as city miles per gallon increase so does highway miles per gallon. The coord_fixed() option is used to make the graphical display of the x axis proportional to the y axis. The geom_abline() option adds a fitted line to the graph to demonstate the linear relationship of the two variables.
 
@@ -83,13 +83,13 @@ ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
 
 ####4.4 Exercises:####
 
-*1. *
+*1. Why does this code not work?*
 
 __ANSWER:__ The code doesn't work because the i in my_variable is replaced by a 1 (or something that isn't the letter i) in my_varıable.
 
 - - - 
 
-*2. *
+*2. Tweak each of the following R commands so that they run correctly:*
 
 __ANSWER:__ 
 
@@ -107,7 +107,7 @@ filter(diamonds, carat > 3)
 
 ####5.2.4 Exercises:####
 
-*1. *
+*1. Find all flights that...*
 
 __ANSWER:__ 
 
@@ -132,7 +132,7 @@ filter(flights, dep_time %in% c(2400,0:600))
 
 - - - 
 
-*3. *
+*3. How many flights have a missing dep_time? What other variables are missing? What might these rows represent?*
 
 __ANSWER:__ There are 8,255 flights with missing depature times. Variables that are dependant on a departure (departure delay, arrival time, arrival delay, and air time) are also all missing for these flights.
 
@@ -145,7 +145,7 @@ filter(flights, is.na(dep_time))
 
 - - - 
 
-*4. *
+*4. Why is NA ^ 0 not missing? Why is NA | TRUE not missing? Why is FALSE & NA not missing? Can you figure out the general rule? (NA * 0 is a tricky counterexample!)*
 
 __ANSWER:__ NA ^ 0 is not missing because any value to the zero is 1. NA | TRUE is not missing TRUE is an option. NA & FALSE is not missing because NA is not FALSE. I think the general rule is that NA is treated like an unknown value, rather than a NULL or empty value.
 
@@ -153,21 +153,25 @@ __ANSWER:__ NA ^ 0 is not missing because any value to the zero is 1. NA | TRUE 
 
 ####5.4.1 Exercises:####
 
-*1. *
+*1. Brainstorm as many ways as possible to select dep_time, dep_delay, arr_time, and arr_delay from flights*
 
 __ANSWER:__ 
 
 ```{r 5_4_1_exercises1, warning=FALSE, message=FALSE}
-
+select(flights, dep_time, dep_delay, arr_time, arr_delay)
+select(flights, dep_time:arr_delay, -sched_dep_time, -sched_arr_time)
+select(flights, starts_with("dep"), starts_with("arr"))
 ```
 
 - - - 
 
-*3. *
+*3. What does the one_of() function do? Why might it be helpful in conjunction with this vector?*
 
-__ANSWER:__ 
+__ANSWER:__ one_of() is useful here because if you try to use the vars vector to select the column names alone, you will get an error. If you use one_of() to read in the names this will work in R. 
 
 ```{r 5_4_1_exercises3, warning=FALSE, message=FALSE}
+vars <- c("year", "month", "day", "dep_delay", "arr_delay")
+select(flights, one_of(vars))
 
 ```
 
