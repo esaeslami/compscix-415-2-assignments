@@ -112,6 +112,21 @@ filter(diamonds, carat > 3)
 __ANSWER:__ 
 
 ```{r 5_2_4_exercises1, warning=FALSE, message=FALSE}
+glimpse(flights)
+#1. Had an arrival delay of two or more hours
+filter(flights, dep_delay >= 2)
+#2. Flew to Houston (IAH or HOU)
+filter(flights, dest == "HOU")
+#3. Were operated by United, American, or Delta
+filter(flights, carrier %in% c("UA", "AA", "DL"))
+#4. Departed in summer (July, August, and September)
+filter(flights, month %in% c(7:9))
+#5. Arrived more than two hours late, but didn’t leave late
+filter(flights, arr_delay > 2, dep_delay == 0)
+#6. Were delayed by at least an hour, but made up over 30 minutes in flight
+filter(flights, arr_delay <= -0.5, dep_delay >= 1)
+#7. Departed between midnight and 6am (inclusive)
+filter(flights, dep_time %in% c(2400,0:600))
 
 ```
 
@@ -119,21 +134,20 @@ __ANSWER:__
 
 *3. *
 
-__ANSWER:__ 
+__ANSWER:__ There are 8,255 flights with missing depature times. Variables that are dependant on a departure (departure delay, arrival time, arrival delay, and air time) are also all missing for these flights.
 
 ```{r 5_2_4_exercises3, warning=FALSE, message=FALSE}
-
+#how many flights with a missing dep_time?
+count(filter(flights, is.na(dep_time)))
+#What other variables are missing for these flights?
+filter(flights, is.na(dep_time))
 ```
 
 - - - 
 
 *4. *
 
-__ANSWER:__ 
-
-```{r 5_2_4_exercises4, warning=FALSE, message=FALSE}
-
-```
+__ANSWER:__ NA ^ 0 is not missing because any value to the zero is 1. NA | TRUE is not missing TRUE is an option. NA & FALSE is not missing because NA is not FALSE. I think the general rule is that NA is treated like an unknown value, rather than a NULL or empty value.
 
 - - - 
 
