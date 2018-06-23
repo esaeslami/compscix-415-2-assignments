@@ -16,14 +16,158 @@ library(nycflights13)
 ####__Homework 3 Assignments:__####
 __Complete these Exercises in R for Data Science:__  
 
-1. Section 3.2.4: all exercises  
-2. Section 3.3.1: all exercises  
-3. Section 3.5.1: #4 and #5 only  
-4. Section 3.6.1: #1-5. Extra Credit: Do #6  
-5. Section 3.7.1: #2 only  
-
-__Review infographic__
-
-6. Review data graphics and answer questions
+1. Section 3.8.1: all exercises
+2. Section 3.9.1: #2 and #4 only
+3. Section 4.4: #1 and #2 only
+4. Section 5.2.4: #1, #3 and #4 only (use nycflights13 package)
+5. Section 5.4.1: #1 and #3 only 
 
 * * * 
+
+####3.8.1 Exercises:####
+
+*Question 1.*
+
+__ANSWER:__ Like the hwy by displ example plot in this section, plotting hwy against cty results in a lot of overlapping points. You could improve the plot by using the position = "jitter" option, like this:
+
+```{r 3_8_1_exercises1, warning=FALSE, message=FALSE}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) + 
+  geom_point(position = "jitter")
+```
+
+- - - 
+
+*Question 2. *
+
+__ANSWER:__ The width and height parameters for geom_jitter() control the amount of jittering.
+
+- - - 
+
+*Question 3. *
+
+__ANSWER:__ geom_jitter() is a useful shortcut when you know you will have overlapping points and don't want to add the position = "jitter" option to geom_point(). geom_count, on the other hand, visualizes the amount of overlap at each position by increasing the area of points with overlap. geom_count() therefore is more useful when you care about highlighting overlap, while geom_jitter() is more of a programming shortcut.
+
+- - - 
+
+*Question 4. *
+
+__ANSWER:__ The default position adjustment for geom_boxplot() is position = "dodge":
+
+```{r 3_8_1_exercises4, warning=FALSE, message=FALSE}
+ggplot(data = mpg, mapping = aes(x = displ, y = cty)) + 
+  geom_boxplot(aes(color = drv), position = "dodge")
+```
+
+- - - 
+
+####3.9.1 Exercises:####
+
+*2. *
+
+__ANSWER:__ labs() allows you to define the x label, y label, and title(s) of a plot.
+
+- - - 
+
+*4. *
+
+__ANSWER:__ The plot below shows that as city miles per gallon increase so does highway miles per gallon. The coord_fixed() option is used to make the graphical display of the x axis proportional to the y axis. The geom_abline() option adds a fitted line to the graph to demonstate the linear relationship of the two variables.
+
+```{r 3_9_1_exercises4, warning=FALSE, message=FALSE}
+ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
+  geom_point()  +
+  geom_abline() +
+  coord_fixed()
+```
+
+- - - 
+
+####4.4 Exercises:####
+
+*1. *
+
+__ANSWER:__ The code doesn't work because the i in my_variable is replaced by a 1 (or something that isn't the letter i) in my_varıable.
+
+- - - 
+
+*2. *
+
+__ANSWER:__ 
+
+```{r 4_4_exercises2, warning=FALSE, message=FALSE}
+library(tidyverse)
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy))
+
+filter(mpg, cyl == 8)
+filter(diamonds, carat > 3)
+```
+
+- - - 
+
+####5.2.4 Exercises:####
+
+*1. *
+
+__ANSWER:__ 
+
+```{r 5_2_4_exercises1, warning=FALSE, message=FALSE}
+
+```
+
+- - - 
+
+*3. *
+
+__ANSWER:__ 
+
+```{r 5_2_4_exercises3, warning=FALSE, message=FALSE}
+
+```
+
+- - - 
+
+*4. *
+
+__ANSWER:__ 
+
+```{r 5_2_4_exercises4, warning=FALSE, message=FALSE}
+
+```
+
+- - - 
+
+####5.4.1 Exercises:####
+
+*1. *
+
+__ANSWER:__ 
+
+```{r 5_4_1_exercises1, warning=FALSE, message=FALSE}
+
+```
+
+- - - 
+
+*3. *
+
+__ANSWER:__ 
+
+```{r 5_4_1_exercises3, warning=FALSE, message=FALSE}
+
+```
+
+- - - 
+
+
+
+
+
+
+
+
+
+
+
+
+
