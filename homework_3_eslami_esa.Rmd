@@ -1,0 +1,29 @@
+---
+author: Esa Eslami
+date: 6/22/2018
+title: "COMPSCIX 415.2 Homework 3"
+output: html_document
+self-contained: true
+---
+
+```{r load_packages, warning=FALSE, message=FALSE, echo=FALSE}
+library(tidyverse)
+library(nycflights13)
+```
+
+* * * 
+
+####__Homework 3 Assignments:__####
+__Complete these Exercises in R for Data Science:__  
+
+1. Section 3.2.4: all exercises  
+2. Section 3.3.1: all exercises  
+3. Section 3.5.1: #4 and #5 only  
+4. Section 3.6.1: #1-5. Extra Credit: Do #6  
+5. Section 3.7.1: #2 only  
+
+__Review infographic__
+
+6. Review data graphics and answer questions
+
+* * * 
