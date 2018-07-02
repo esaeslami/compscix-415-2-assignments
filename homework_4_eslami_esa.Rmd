@@ -8,6 +8,7 @@ self-contained: true
 
 ```{r load_packages, warning=FALSE, message=FALSE, echo=FALSE}
 library(tidyverse)
+library(nycflights13)
 ```
 
 * * * 
@@ -24,17 +25,40 @@ Section 12.4.3: #1 and #2 only
 
 ####5.6.7 Exercises:####
 
-*2. ?*
+*2. Come up with another approach that will give you the same output as not_cancelled %>% count(dest) and not_cancelled %>% count(tailnum, wt = distance) (without using count()).*
 
 __ANSWER:__ 
 
 ```{r 5_6_7_EX2, warning=FALSE, message=FALSE}
-
+# First we need to create non_cancelled
+not_cancelled <- flights %>% 
+  filter(!is.na(dep_delay), !is.na(arr_delay))
+# Now run not_cancelled %>% count(dest) to see what it looks like
+not_cancelled %>% count(dest)
+# We can get this same output using summarize() like this:
+flights %>%
+  filter(!is.na(dep_delay), !is.na(arr_delay)) %>%
+  group_by(dest) %>%
+  summarize(not_cancelled = sum(!is.na(dep_delay)))
+# Confirm that the output is identical:
+countdest1 <- not_cancelled %>% count(dest)
+countdest2 <- flights %>%
+        filter(!is.na(dep_delay), !is.na(arr_delay)) %>%
+        group_by(dest) %>%
+        summarize(not_cancelled = sum(!is.na(dep_delay)))
+identical(countdest1$n,countdest2$not_cancelled)
+# Similarly, we can use summarize() to get the same results from not_cancelled %>% count(tailnum, wt = distance) like this:
+taildist1 <- not_cancelled %>% count(tailnum, wt = distance)
+taildist2 <- flights %>%
+        filter(!is.na(dep_delay), !is.na(arr_delay)) %>%
+        group_by(tailnum) %>%
+        summarize(not_cancelled = sum(distance))
+identical(taildist1$n,taildist2$not_cancelled)
 ```
 
 - - - 
 
-*4. ?*
+*4. Look at the number of cancelled flights per day. Is there a pattern? Is the proportion of cancelled flights related to the average delay?*
 
 __ANSWER:__ 
 
@@ -44,7 +68,13 @@ __ANSWER:__
 
 - - - 
 
-*6. ?*
+*6. What does the sort argument to count() do. When might you use it?*
+
+__ANSWER:__ 
+
+```{r 5_6_7_EX6, warning=FALSE, message=FALSE}
+
+```
 
 ####10.5 Exercises:####
 
