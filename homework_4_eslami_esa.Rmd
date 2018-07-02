@@ -1,0 +1,143 @@
+---
+author: Esa Eslami
+date: 7/01/2018
+title: "COMPSCIX 415.2 Homework 4"
+output: html_document
+self-contained: true
+---
+
+```{r load_packages, warning=FALSE, message=FALSE, echo=FALSE}
+library(tidyverse)
+```
+
+* * * 
+
+####__Homework 4 Assignments:__####
+__Complete these Exercises in R for Data Science:__  
+
+Section 5.6.7: #2, #4 and #6 only. Extra Credit: Do #5
+Section 10.5: #1, #2, #3 and #6 only
+Section 12.3.3: #2, #3 and #4 only
+Section 12.4.3: #1 and #2 only
+
+* * * 
+
+####5.6.7 Exercises:####
+
+*2. ?*
+
+__ANSWER:__ 
+
+```{r 5_6_7_EX2, warning=FALSE, message=FALSE}
+
+```
+
+- - - 
+
+*4. ?*
+
+__ANSWER:__ 
+
+```{r 5_6_7_EX4, warning=FALSE, message=FALSE}
+
+```
+
+- - - 
+
+*6. ?*
+
+####10.5 Exercises:####
+
+*1. ?*
+
+__ANSWER:__ 
+
+```{r 10_5_EX1, warning=FALSE, message=FALSE}
+
+```
+
+- - - 
+
+*2. ?*
+
+__ANSWER:__ 
+
+```{r 10_5_EX2, warning=FALSE, message=FALSE}
+
+```
+
+- - - 
+
+*3. ?*
+
+__ANSWER:__ 
+
+```{r 10_5_EX3, warning=FALSE, message=FALSE}
+
+```
+
+- - - 
+
+*6. ?*
+
+__ANSWER:__ 
+
+```{r 10_5_EX6, warning=FALSE, message=FALSE}
+
+```
+
+- - - 
+####12.3.3 Exercises:####
+
+*2. ?*
+
+__ANSWER:__ 
+
+```{r 12_3_3_EX2, warning=FALSE, message=FALSE}
+
+```
+
+- - - 
+
+*3. ?*
+
+__ANSWER:__ 
+
+```{r 12_3_3_EX3, warning=FALSE, message=FALSE}
+
+```
+
+- - - 
+
+*4. ?*
+
+__ANSWER:__ 
+
+```{r 12_3_3_EX4, warning=FALSE, message=FALSE}
+
+```
+
+- - - 
+
+####12.4.3 Exercises:####
+
+*1. ?*
+
+__ANSWER:__ 
+
+```{r 12_4_3_EX1, warning=FALSE, message=FALSE}
+
+```
+
+- - - 
+
+*2. ?*
+
+__ANSWER:__ 
+
+```{r 12_4_3_EX2, warning=FALSE, message=FALSE}
+
+```
+
+- - - 
+
