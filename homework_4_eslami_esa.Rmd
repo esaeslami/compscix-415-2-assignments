@@ -18,10 +18,10 @@ library(gridExtra)
 ####__Homework 4 Assignments:__####
 __Complete these Exercises in R for Data Science:__  
 
-Section 5.6.7: #2, #4 and #6 only. Extra Credit: Do #5
-Section 10.5: #1, #2, #3 and #6 only
-Section 12.3.3: #2, #3 and #4 only
-Section 12.4.3: #1 and #2 only
+1. Section 5.6.7: #2, #4 and #6 only. Extra Credit: Do #5
+2. Section 10.5: #1, #2, #3 and #6 only
+3. Section 12.3.3: #2, #3 and #4 only
+4. Section 12.4.3: #1 and #2 only
 
 * * * 
 
@@ -87,83 +87,118 @@ grid.arrange(plot1, plot2, ncol=2)
 
 *6. What does the sort argument to count() do. When might you use it?*
 
-__ANSWER:__ 
-
-```{r 5_6_7_EX6, warning=FALSE, message=FALSE}
-
-```
+__ANSWER:__ The sort argument allows you to sort output in descendiing order. This could be useful when looking for extremes (either highest or lowest frequencies).
 
 ####10.5 Exercises:####
 
-*1. ?*
+*1. How can you tell if an object is a tibble? (Hint: try printing mtcars, which is a regular data frame).*
 
-__ANSWER:__ 
-
-```{r 10_5_EX1, warning=FALSE, message=FALSE}
-
-```
+__ANSWER:__ R will identify tibbles when you use the head() function, or if you try to print the entire dataset. 
 
 - - - 
 
-*2. ?*
+*2. Compare and contrast the following operations on a data.frame and equivalent tibble. What is different? Why might the default data frame behaviours cause you frustration?*
 
 __ANSWER:__ 
 
 ```{r 10_5_EX2, warning=FALSE, message=FALSE}
+# Two equivalent data sets, one as a data.frame and one as a tibble
+df <- data.frame(abc = 1, xyz = "a")
+df_tbl <- tibble(
+  abc = 1, 
+  xyz = "a"
+  )
 
+# If you mistype a column name in a data.frame, R will still return a value if the name is close, whereas a tibble will not:
+df$x
+df_tbl$x
+
+# If you specify the data.frame column(s) correctly, R will return the values but a tibble will give you more useful information like the column type (character) and dimensions:
+df[, "xyz"]
+df_tbl[, "xyz"]
+
+df[, c("abc", "xyz")]
+df_tbl[, c("abc", "xyz")]
 ```
 
 - - - 
 
-*3. ?*
+*3. If you have the name of a variable stored in an object, e.g. var <- "mpg", how can you extract the reference variable from a tibble?*
 
-__ANSWER:__ 
+__ANSWER:__ You can either use [1] or [[1]], where 1 corresponds to the column containing var.
 
 ```{r 10_5_EX3, warning=FALSE, message=FALSE}
-
+df <- tibble(var <- "mpg")
+df[[1]]
+df[1]
 ```
 
 - - - 
 
-*6. ?*
+*6. What option controls how many additional column names are printed at the footer of a tibble?*
 
-__ANSWER:__ 
-
-```{r 10_5_EX6, warning=FALSE, message=FALSE}
-
-```
+__ANSWER:__ The n_extra argument can be added to a print() statement to control the number of extra columns listed at the bottom of the footer.
 
 - - - 
+
 ####12.3.3 Exercises:####
 
-*2. ?*
+*2. Why does this code fail?*
 
-__ANSWER:__ 
+```{r 12_3_3_EX2.1, warning=FALSE, message=FALSE, eval=FALSE}
+table4a %>% 
+  gather(1999, 2000, key = "year", value = "cases")
+#> Error in inds_combine(.vars, ind_list): Position must be between 0 and n
+```
 
-```{r 12_3_3_EX2, warning=FALSE, message=FALSE}
+__ANSWER:__ The code fails because the two year columns are numbers. In order to make the code work you have to surround them in quotes like this:
 
+```{r 12_3_3_EX2.2, warning=FALSE, message=FALSE}
+table4a %>% 
+  gather('1999', '2000', key = "year", value = "cases")
 ```
 
 - - - 
 
-*3. ?*
+*3. Why does spreading this tibble fail? How could you add a new column to fix the problem?*
 
-__ANSWER:__ 
+__ANSWER:__ Spreading this tibble fails because there are two different ages for the same person. You could add a new column (let's say year) to differentiate between the two, like this:
 
-```{r 12_3_3_EX3, warning=FALSE, message=FALSE}
-
+```{r 12_3_3_EX3.1, warning=FALSE, message=FALSE}
+people <- tribble(
+  ~name,             ~key,    ~value, ~year,
+  #-----------------|--------|------|------
+  "Phillip Woods",   "age",       45, 2000,
+  "Phillip Woods",   "height",   186, 2000,
+  "Phillip Woods",   "age",       50, 2005,
+  "Jessica Cordero", "age",       37, 2000,
+  "Jessica Cordero", "height",   156, 2000
+)
 ```
 
+```{r 12_3_3_EX3.2, warning=FALSE, message=FALSE}
+people %>%
+    spread(key, value)
+```
 - - - 
 
-*4. ?*
+*4. Tidy the simple tibble below. Do you need to spread or gather it? What are the variables?*
 
 __ANSWER:__ 
 
-```{r 12_3_3_EX4, warning=FALSE, message=FALSE}
-
+```{r 12_3_3_EX4.1, warning=FALSE, message=FALSE}
+preg <- tribble(
+  ~pregnant, ~male, ~female,
+  "yes",     NA,    10,
+  "no",      20,    12
+)
 ```
 
+```{r 12_3_3_EX4.2, warning=FALSE, message=FALSE}
+# You can tidy the tibble by using gather()
+preg %>% 
+  gather(male, female, key = "gender", value = "count")
+```
 - - - 
 
 ####12.4.3 Exercises:####
