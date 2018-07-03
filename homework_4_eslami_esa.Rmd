@@ -23,6 +23,19 @@ __Complete these Exercises in R for Data Science:__
 3. Section 12.3.3: #2, #3 and #4 only
 4. Section 12.4.3: #1 and #2 only
 
+* * *
+
+__Answer these questions:__
+
+Follow these steps:
+
+* Download the baby_names.txt file from Canvas which is in the Homework 4 assignment section.
+* Load this file into R correctly and take a glimpse of the output.
+* Export this file as a csv file and call it ‘baby_names.csv’.
+* Reload the baby_names.csv file and take another glimpse.
+* Show all of your code and the output. There should be two data import lines of code, one data export
+line of code, and two glimpses of the data.
+
 * * * 
 
 ####5.6.7 Exercises:####
@@ -203,22 +216,58 @@ preg %>%
 
 ####12.4.3 Exercises:####
 
-*1. ?*
+*1. What do the extra and fill arguments do in separate()? Experiment with the various options for the following two toy datasets.*
 
-__ANSWER:__ 
+__ANSWER:__ extra can be used when there are too many pieces, like in the first example. fill can be used when there are not enough pieces, like in the second example.
 
 ```{r 12_4_3_EX1, warning=FALSE, message=FALSE}
+tibble(x = c("a,b,c", "d,e,f,g", "h,i,j")) %>% 
+  separate(x, c("one", "two", "three"), extra = "merge")
 
+tibble(x = c("a,b,c", "d,e", "f,g,i")) %>% 
+  separate(x, c("one", "two", "three"), fill = "left")
 ```
 
 - - - 
 
-*2. ?*
+*2. Both unite() and separate() have a remove argument. What does it do? Why would you set it to FALSE?*
 
-__ANSWER:__ 
+__ANSWER:__ The remove argument removes the input column (in the example below, this is the rate column). If set to false, it does not remove it. This could be useful if you want to confirm that the separation worked as you expected.
 
 ```{r 12_4_3_EX2, warning=FALSE, message=FALSE}
+# remove set to TRUE (default value)
+table3 %>% 
+  separate(rate, into = c("cases", "population"), convert = TRUE, remove = TRUE)
+# remove set to FALSE 
+table3 %>% 
+  separate(rate, into = c("cases", "population"), convert = TRUE, remove = FALSE)
+```
 
+- - - 
+
+####Data Import/Export Exercise:####
+
+Follow these steps:
+
+* Download the baby_names.txt file from Canvas which is in the Homework 4 assignment section.
+* Load this file into R correctly and take a glimpse of the output.
+* Export this file as a csv file and call it ‘baby_names.csv’.
+* Reload the baby_names.csv file and take another glimpse.
+* Show all of your code and the output. There should be two data import lines of code, one data export line of code, and two glimpses of the data.
+
+__ANSWER:__ 
+```{r import_export, warning=FALSE, message=FALSE}
+#Load baby_names.txt file into R and take a glimpse of the output
+baby_names_path <- 'C:/Users/Eeslami/Desktop/UCB Courses/X415.2 - Introduction to Data Science/compscix-415-2-assignments/baby_names.txt'
+baby_names_df <- read_delim(file = baby_names_path, delim = '|')
+glimpse(baby_names_df)
+
+#Export baby_names.txt file as a csv file and call it ‘baby_names.csv’
+write_delim(baby_names_df, delim = ',', path = 'baby_names.csv')
+
+#Reload the baby_names.csv file and take another glimpse.
+baby_names_df2 <- read.csv(file = 'baby_names.csv')
+glimpse(baby_names_df2)
 ```
 
 - - - 
