@@ -170,3 +170,50 @@ ggplot(data = diamonds, mapping = aes(x = cut,y = carat, fill = color)) +
 ```
 
 * * *
+### Data munging and wrangling
+
+*1. Is this data “tidy”? If yes, leave it alone and go to the next problem. If no, make it tidy.*
+
+```{r munging_wrangling_q1, warning=FALSE, message=FALSE}
+table2
+```
+
+__ANSWER:__ No. The type column contains two different variables (cases and population), therefore the data is not shown in the most intuitive or useful way. To clean this up, you can use the spread() fuction to break out type into two new rows, like this: 
+
+```{r munging_wrangling_a1, warning=FALSE, message=FALSE}
+table2 %>%
+    spread(key = type, value = count)
+```
+
+* * *
+
+*2. Create a new column in the diamonds data set called price_per_carat that shows the price of each diamond per carat (hint: divide). Only show me the code, not the output.*
+
+__ANSWER:__  
+
+```{r munging_wrangling_a2, warning=FALSE, message=FALSE, eval=FALSE}
+mutate(diamonds,
+  price_per_carat = price / carat
+)
+```
+
+* * *
+
+*3. For each cut of diamond in the diamonds data set, how many diamonds, and what proportion, have a price > 10000 and a carat < 1.5? There are several ways to get to an answer, but your solution must use the data wrangling verbs from the tidyverse in order to get credit.*
+
+*• Do the results make sense? Why?*
+*• Do we need to be wary of any of these numbers? Why?*
+
+__ANSWER:__  
+
+```{r munging_wrangling_a3, warning=FALSE, message=FALSE}
+diamonds %>%
+  group_by(cut) %>% 
+  summarise(total_diamonds = n(),
+            high_price_low_carat = sum(price > 10000 & carat < 1.5),
+            proportion_of_total = mean(price > 10000 & carat < 1.5))
+```
+
+The results make sense in that as the cut quality increases, there are more diamonds meeting the high price cut off (>$10,000). We would maybe expect that not as many Ideal diamonds would qualify under the low carat threshold (< 1.5), but this is a good example that carat is not the only driver in price. To get a better sense of what's going on here, we would want to add another variable to our output. 
+
+* * *
