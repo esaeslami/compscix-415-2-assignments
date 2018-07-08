@@ -1,0 +1,41 @@
+---
+author: Esa Eslami
+date: 7/8/2018
+title: "COMPSCIX 415.2 Homework 5/Midterm"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+    toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##__Midterm Exercises__##
+
+### RStudio and R Markdown
+
+*1. Use markdown headers in your document to clearly separate each midterm question and add a table of
+contents to your document.*
+
+__ANSWER:__ See document formatting.
+
+* * *
+
+### RStudio and R Markdown
+
+*By now you’ve used at least five different packages from the tidyverse for plotting, data munging, reshaping data, importing/exporting data, and using tibbles (the tibble package is used for this without you even realizing it’s there).*
+
+*1. Can you name which package is associated with each task below?*
+
+__ANSWER:__ 
+
+* Plotting -
+* Data munging/wrangling -
+* Reshaping (speading and gathering) data -
+* Importing/exporting data -
+
+* * *
