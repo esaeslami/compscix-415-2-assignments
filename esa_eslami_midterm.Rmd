@@ -202,6 +202,7 @@ mutate(diamonds,
 *3. For each cut of diamond in the diamonds data set, how many diamonds, and what proportion, have a price > 10000 and a carat < 1.5? There are several ways to get to an answer, but your solution must use the data wrangling verbs from the tidyverse in order to get credit.*
 
 *• Do the results make sense? Why?*
+
 *• Do we need to be wary of any of these numbers? Why?*
 
 __ANSWER:__  
@@ -215,5 +216,59 @@ diamonds %>%
 ```
 
 The results make sense in that as the cut quality increases, there are more diamonds meeting the high price cut off (>$10,000). We would maybe expect that not as many Ideal diamonds would qualify under the low carat threshold (< 1.5), but this is a good example that carat is not the only driver in price. To get a better sense of what's going on here, we would want to add another variable to our output. 
+
+* * *
+
+### EDA
+
+*Take a look at the txhousing data set that is included with the ggplot2 package and answer these questions:*
+
+*1. During what time period is this data from?*
+
+__ANSWER:__ 
+```{r EDA_a1, warning=FALSE, message=FALSE}
+
+```
+
+*2. How many cities are represented?*
+
+__ANSWER:__ 
+```{r EDA_a2, warning=FALSE, message=FALSE}
+
+```
+
+*3. Which city, month and year had the highest number of sales?*
+
+__ANSWER:__ 
+```{r EDA_a3, warning=FALSE, message=FALSE}
+
+```
+
+*4. What kind of relationship do you think exists between the number of listings and the number of sales? Check your assumption and show your work.*
+
+__ANSWER:__ 
+```{r EDA_a4, warning=FALSE, message=FALSE}
+
+```
+
+*5. What proportion of sales is missing for each city?*
+
+__ANSWER:__ 
+```{r EDA_a5, warning=FALSE, message=FALSE}
+
+```
+
+*6. Looking at only the cities and months with greater than 500 sales:*
+
+* Are the distributions of the median sales price (column name median), when grouped by city,
+different? The same? Show your work.
+* Any cities that stand out that you’d want to investigate further?
+* Why might we want to filter out all cities and months with sales less than 500?
+
+__ANSWER:__ 
+```{r EDA_a6, warning=FALSE, message=FALSE}
+
+```
+
 
 * * *

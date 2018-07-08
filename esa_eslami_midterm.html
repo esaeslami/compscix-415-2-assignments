@@ -406,6 +406,47 @@ glimpse(rail_trail_df2)</code></pre>
   price_per_carat = price / carat
 )</code></pre>
 <hr />
+<p><em>3. For each cut of diamond in the diamonds data set, how many diamonds, and what proportion, have a price &gt; 10000 and a carat &lt; 1.5? There are several ways to get to an answer, but your solution must use the data wrangling verbs from the tidyverse in order to get credit.</em></p>
+<p><em>• Do the results make sense? Why?</em></p>
+<p><em>• Do we need to be wary of any of these numbers? Why?</em></p>
+<p><strong>ANSWER:</strong></p>
+<pre class="r"><code>diamonds %&gt;%
+  group_by(cut) %&gt;% 
+  summarise(total_diamonds = n(),
+            high_price_low_carat = sum(price &gt; 10000 &amp; carat &lt; 1.5),
+            proportion_of_total = mean(price &gt; 10000 &amp; carat &lt; 1.5))</code></pre>
+<pre><code>## # A tibble: 5 x 4
+##   cut       total_diamonds high_price_low_carat proportion_of_total
+##   &lt;ord&gt;              &lt;int&gt;                &lt;int&gt;               &lt;dbl&gt;
+## 1 Fair                1610                    4             0.00248
+## 2 Good                4906                   17             0.00347
+## 3 Very Good          12082                  155             0.0128 
+## 4 Premium            13791                  173             0.0125 
+## 5 Ideal              21551                  485             0.0225</code></pre>
+<p>The results make sense in that as the cut quality increases, there are more diamonds meeting the high price cut off (&gt;$10,000). We would maybe expect that not as many Ideal diamonds would qualify under the low carat threshold (&lt; 1.5), but this is a good example that carat is not the only driver in price. To get a better sense of what’s going on here, we would want to add another variable to our output.</p>
+<hr />
+</div>
+<div id="eda" class="section level3">
+<h3>EDA</h3>
+<p><em>Take a look at the txhousing data set that is included with the ggplot2 package and answer these questions:</em></p>
+<p><em>1. During what time period is this data from?</em></p>
+<p><strong>ANSWER:</strong></p>
+<p><em>2. How many cities are represented?</em></p>
+<p><strong>ANSWER:</strong></p>
+<p><em>3. Which city, month and year had the highest number of sales?</em></p>
+<p><strong>ANSWER:</strong></p>
+<p><em>4. What kind of relationship do you think exists between the number of listings and the number of sales? Check your assumption and show your work.</em></p>
+<p><strong>ANSWER:</strong></p>
+<p><em>5. What proportion of sales is missing for each city?</em></p>
+<p><strong>ANSWER:</strong></p>
+<p><em>6. Looking at only the cities and months with greater than 500 sales:</em></p>
+<ul>
+<li>Are the distributions of the median sales price (column name median), when grouped by city, different? The same? Show your work.</li>
+<li>Any cities that stand out that you’d want to investigate further?</li>
+<li>Why might we want to filter out all cities and months with sales less than 500?</li>
+</ul>
+<p><strong>ANSWER:</strong></p>
+<hr />
 </div>
 </div>
 
