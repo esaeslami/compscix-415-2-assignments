@@ -9,6 +9,7 @@ output:
       collapsed: false
     toc_depth: 3
 ---
+My Github repository for my assignments can be found at this URL: [https://github.com/esaeslami/compscix-415-2-assignments](https://github.com/esaeslami/compscix-415-2-assignments)
 
 ```{r load_packages, warning=FALSE, message=FALSE, echo=FALSE}
 library(tidyverse)
@@ -225,50 +226,92 @@ The results make sense in that as the cut quality increases, there are more diam
 
 *1. During what time period is this data from?*
 
-__ANSWER:__ 
+__ANSWER:__ The date spans January 2000 to July 2015.
 ```{r EDA_a1, warning=FALSE, message=FALSE}
-
+# See the earliest date
+txhousing %>%
+  select(year, month, date) %>%
+  arrange(date) %>%
+  head(1)
+# See the latest date
+txhousing %>%
+  select(year, month, date) %>%
+  arrange(desc(date)) %>%
+  head(1)
 ```
+
+
+* * *
 
 *2. How many cities are represented?*
 
-__ANSWER:__ 
+__ANSWER:__ There are 46 cities represented.
 ```{r EDA_a2, warning=FALSE, message=FALSE}
-
+txhousing %>%
+  summarise(Unique_Cities = n_distinct(city))
 ```
+
+* * *
 
 *3. Which city, month and year had the highest number of sales?*
 
-__ANSWER:__ 
+__ANSWER:__ The highest number of sales occured in Houston in July 2015.
 ```{r EDA_a3, warning=FALSE, message=FALSE}
-
+txhousing %>%
+  select(city, month, year, sales) %>%
+  arrange(desc(sales)) %>%
+  head(1)
 ```
+
+* * *
 
 *4. What kind of relationship do you think exists between the number of listings and the number of sales? Check your assumption and show your work.*
 
-__ANSWER:__ 
+__ANSWER:__ It appears that as listings increase, so do sales. This relationship is not exactly linear though, and it's likely that other factors are in play (such as city).
 ```{r EDA_a4, warning=FALSE, message=FALSE}
-
+ggplot(data = txhousing, mapping = aes(x = listings, y = sales)) + 
+  geom_point() +
+  geom_smooth(se = FALSE)
 ```
+
+* * *
 
 *5. What proportion of sales is missing for each city?*
 
-__ANSWER:__ 
+__ANSWER:__ Most cities are missing only a few sales. However, there are a few standouts. South Padre Island and Kerrville are both missing over half of their sales, and a few others are missing between 10 to 40 percent of their sales. 
 ```{r EDA_a5, warning=FALSE, message=FALSE}
-
+txhousing %>%
+  group_by(city) %>% 
+  summarise(total_sales = n(),
+            missing_sales = sum(is.na(sales)),
+            prop_missing = missing_sales/total_sales) %>%
+  arrange(desc(prop_missing)) 
 ```
+
+* * *
 
 *6. Looking at only the cities and months with greater than 500 sales:*
 
-* Are the distributions of the median sales price (column name median), when grouped by city,
-different? The same? Show your work.
-* Any cities that stand out that you’d want to investigate further?
-* Why might we want to filter out all cities and months with sales less than 500?
+* Are the distributions of the median sales price (column name median), when grouped by city, different? The same? Show your work.
 
-__ANSWER:__ 
-```{r EDA_a6, warning=FALSE, message=FALSE}
-
+__ANSWER:__ The distributions vary by city:
+```{r EDA_a6_1, warning=FALSE, message=FALSE}
+sales_over_500_df <- filter(txhousing, sales > 500)
+ggplot(data = sales_over_500_df, mapping = aes(x = reorder(city, median, fun = median), y = median)) + 
+  geom_boxplot() +
+  coord_flip() +
+  xlab("City") +
+  ggtitle("Median housing sales ($) for cities with over 500 sales in a month")
 ```
 
+* Any cities that stand out that you’d want to investigate further?
 
+__ANSWER:__ Yes, it would be interesting to get more information on the cities that appear at the top of the graph to see why their housing market is doing so well. It may be regional aspect, or reflective of the population living there already. 
+
+* Why might we want to filter out all cities and months with sales less than 500?
+
+__ANSWER:__ Because we are interested in identifying high sales markets, we want to eliminate any cities with potential outlier sales months. Average sales are about 550 per month, over the entire data set, so a cut off of 500 makes sense. And while the median is much lower (at 169), there are so many cities represented that we want to pick a number high enough (like 500) so that we limit our analysis on the top housing markets.   
+```{r EDA_a6_2, warning=FALSE, message=FALSE}
+summary(txhousing$sales, na.rm = TRUE)
+```
 * * *
