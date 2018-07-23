@@ -12,7 +12,7 @@ output:
 
 ```{r load_packages, warning=FALSE, message=FALSE, echo=FALSE}
 library(tidyverse)
-
+library(broom)
 ```
 
 ##__Homework 7 Assignments:__##
@@ -21,10 +21,17 @@ library(tidyverse)
 
 *Load the train.csv dataset into R. How many observations and columns are there?*
 
-__ANSWER:__ 
+__ANSWER:__ There are 1,460 observations (rows) and 81 variables (columns).
 
 ```{r ex1_q1, warning=FALSE, message=FALSE, eval=TRUE}
-
+#Set path
+train_df_path <- 'C:/Users/Eeslami/Desktop/UCB Courses/X415.2 - Introduction to Data Science/compscix-415-2-assignments/train.csv'
+#Load file 
+train_df <- read_csv(file = train_df_path)
+#Get a quick look at data
+train_df %>%
+  as_tibble() %>%
+  dim_desc()
 ```
 
 * * *
