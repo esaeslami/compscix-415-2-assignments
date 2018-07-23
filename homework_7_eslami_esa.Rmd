@@ -89,23 +89,26 @@ train_df %>% ggplot(aes(x = SalePrice, y = OverallQual)) +
 __ANSWER:__ 
 
 ```{r ex3_q1, warning=FALSE, message=FALSE, eval=TRUE}
-
+library(broom)
+x <- rep(0, length(train_df$SalePrice))
+sales_lm <- lm(formula = SalePrice ~ x, data = train_df)
+tidy(sales_lm)
 ```
 
 * compare the coefficient to the average value of SalePrice, and 
 
-__ANSWER:__ 
+__ANSWER:__ They match exactly.
 
 ```{r ex3_q2, warning=FALSE, message=FALSE, eval=TRUE}
-
+mean(train_df$SalePrice)
 ```
 
 * take a look at the R-squared. 
 
-__ANSWER:__ 
+__ANSWER:__ The R-squared value of 0 means that our model (simply using the mean) does not explain anything about the variability of SalePrice.
 
 ```{r ex3_q3, warning=FALSE, message=FALSE, eval=TRUE}
-
+glance(sales_lm)
 ```
 
 * * *
