@@ -13,6 +13,7 @@ output:
 ```{r load_packages, warning=FALSE, message=FALSE, echo=FALSE}
 library(tidyverse)
 library(broom)
+
 ```
 
 ##__Homework 7 Assignments:__##
@@ -28,7 +29,7 @@ __ANSWER:__ There are 1,460 observations (rows) and 81 variables (columns).
 train_df_path <- 'C:/Users/Eeslami/Desktop/UCB Courses/X415.2 - Introduction to Data Science/compscix-415-2-assignments/train.csv'
 #Load file 
 train_df <- read_csv(file = train_df_path)
-#Get a quick look at data
+#Get dimensions of data frame
 train_df %>%
   as_tibble() %>%
   dim_desc()
@@ -46,7 +47,12 @@ train_df %>%
 __ANSWER:__ 
 
 ```{r ex2_q1, warning=FALSE, message=FALSE, eval=TRUE}
-
+library(scales)
+train_df %>% ggplot(aes(x = SalePrice)) +
+  geom_histogram()+ 
+  labs(x="Sale Price") +
+  scale_x_continuous(label=dollar_format()) +
+  theme_bw()
 ```
 
 * Visualize the covariation between SalePrice and Neighborhood. 
@@ -54,7 +60,11 @@ __ANSWER:__
 __ANSWER:__ 
 
 ```{r ex2_q2, warning=FALSE, message=FALSE, eval=TRUE}
-
+train_df %>% ggplot(aes(x = SalePrice, y = reorder(Neighborhood, SalePrice, FUN = median))) +
+  geom_point(alpha = .8) +
+  labs(x="Sale Price", y = "Neighborhood") +
+  scale_x_continuous(label=dollar_format()) +
+  theme_bw()
 ```
 
 * Visualize the covariation between SalePrice and OverallQual. 
@@ -62,7 +72,11 @@ __ANSWER:__
 __ANSWER:__ 
 
 ```{r ex2_q3, warning=FALSE, message=FALSE, eval=TRUE}
-
+train_df %>% ggplot(aes(x = SalePrice, y = OverallQual)) +
+  geom_point(alpha = .8) +
+  labs(x="Sale Price") +
+  scale_x_continuous(label=dollar_format()) +
+  theme_bw()
 ```
 
 * * *
