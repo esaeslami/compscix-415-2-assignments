@@ -118,82 +118,82 @@ glance(sales_lm)
 *Now fit a linear regression model using GrLivArea, OverallQual, and Neighborhood as the features. Don’t forget to look at data_description.txt to understand what these variables mean. Ask yourself these questions before fitting the model:*
 
 * What kind of relationship will these features have with our target? 
-
-__ANSWER:__ 
-
-```{r ex4_q1, warning=FALSE, message=FALSE, eval=TRUE}
-
-```
-
 * Can the relationship be estimated linearly? 
-
-__ANSWER:__ 
-
-```{r ex4_q2, warning=FALSE, message=FALSE, eval=TRUE}
-
-```
-
 * Are these good features, given the problem we are trying to solve? 
 
-__ANSWER:__ 
+__ANSWER:__ GrLivArea is a numeric variable representing the "Above grade (ground) living area square feet"; OverallQual is a numeric variable that "Rates the overall material and finish of the house"; and Neighborhood is a categorical variable representing city neighborhood. Without knowing more about how the different neighborhoods relate to each other, my expectation is that Neighborhood will not be a good feature to add to the model because it has too many values and we do not know enough about the neighborhoods to order them.
 
-```{r ex4_q3, warning=FALSE, message=FALSE, eval=TRUE}
-
+```{r ex4_q1, warning=FALSE, message=FALSE, eval=TRUE}
+#GrLivArea: Above grade (ground) living area square feet
+#OverallQual: Rates the overall material and finish of the house
+#Neighborhood: Physical locations within Ames city limits
+train_df <- train_df %>% mutate(Neighborhood_fct = factor(Neighborhood, ordered = FALSE))
+sales_mult_lm <- lm(formula = SalePrice ~ GrLivArea + OverallQual + Neighborhood_fct, data = train_df)
 ```
 
 *After fitting the model, output the coefficients and the R-squared using the broom package. Answer these questions:*
 
-* How would you interpret the coefficients on GrLivArea and OverallQual? 
+1. How would you interpret the coefficients on GrLivArea and OverallQual? 
+2. How would you interpret the coefficient on NeighborhoodBrkSide? 
 
-__ANSWER:__ 
+__ANSWERS:__ 
 
-```{r ex4_q4, warning=FALSE, message=FALSE, eval=TRUE}
+1. For every one unit increase in GrLivArea, the sale price increases, on average, by \$55.56 and for every one unit increase in OverallQual, the sale price increases, on average, by \$20,951. 
+2. Because Neighborhood is an unordered categorical variable, the coefficient can be interpreted as a comparison to the first value in Neighborhood. Therefore, the mean price difference between NeighborhoodBrkSide and the first neighborhood (Bloomington Heights) is -$13,025. 
 
-```
-
-* How would you interpret the coefficient on NeighborhoodBrkSide? 
-
-__ANSWER:__ 
-
-```{r ex4_q5, warning=FALSE, message=FALSE, eval=TRUE}
-
+```{r ex4_q2, warning=FALSE, message=FALSE, eval=TRUE}
+tidy(sales_mult_lm)
+glance(sales_mult_lm)
 ```
 
 * Are the features significant? 
 
-__ANSWER:__ 
+__ANSWER:__ To answer this, I prefer the summary() command, which more clearly highlights which features are significant at different p-values. GrLivArea and OverallQual are significant at the 0.000 level. Depending on how we define our significance cut off, certain Neighborhood values are significant, but several are not even at generous thresholds.  
 
-```{r ex4_q6, warning=FALSE, message=FALSE, eval=TRUE}
-
+```{r ex4_q3, warning=FALSE, message=FALSE, eval=TRUE}
+summary(sales_mult_lm)
 ```
+
 
 * Are the features practically significant? 
 
-__ANSWER:__ 
-
-```{r ex4_q7, warning=FALSE, message=FALSE, eval=TRUE}
-
-```
+__ANSWER:__ For GrLivArea and OverallQual I would say yes, these are useful findings. I don't think Neighborhoods is practically significant as the relationship between neighborhoods is not clear.
 
 * Is the model a good fit? 
 
-__ANSWER:__ 
+__ANSWER:__ The adjusted R-Squared of .78 suggests the model is a decent fit, but I would continue to do some EDA and see how other variables impact the model.
 
-```{r ex4_q8, warning=FALSE, message=FALSE, eval=TRUE}
-
-```
 * * *
 
 ### Exercise 6
 
 *One downside of the linear model is that it is sensitive to unusual values because the distance incorporates a squared term. Fit a linear model to the simulated data below (use y as the target and x as the feature), and look at the resulting coefficients and R-squared. Rerun it about 5-6 times to generate different simulated datasets. What do you notice about the model’s coefficient on x and the R-squared values?*
 
-```{r ex6_q1, warning=FALSE, message=FALSE, eval=FALSE}
+```{r ex6_q1, warning=FALSE, message=FALSE, eval=TRUE}
 sim1a <- tibble(
 x = rep(1:10, each = 3),
 y = x * 1.5 + 6 + rt(length(x), df = 2)
 )
 ```
 
-__ANSWER:__ 
+__ANSWER:__ Both the coefficient and the R-squared values fluctuate depending on the simulation run. There does not appear to be a clear linear relationship between the two though.
 
+```{r ex6_q2, warning=FALSE, message=FALSE, eval=TRUE}
+sim1a_coef <- rep(NA, 6)
+sim1a_rsqr <- rep(NA, 6)
+for(i in 1:6) {
+  sim1a <- tibble(
+    x = rep(1:10, each = 3),
+    y = x * 1.5 + 6 + rt(length(x), df = 2)
+    )
+  sim1a_lm <- lm(formula = y ~ x, data = sim1a)
+  sim1a_coef[i] <- coef(sim1a_lm)[2]
+  sim1a_rsqr[i] <- glance(sim1a_lm)[[2]]
+  }
+
+tibble(
+    sim_number = c(1:6),
+    coefficient = sim1a_coef,
+    r_squared = sim1a_rsqr
+    )
+```

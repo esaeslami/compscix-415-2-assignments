@@ -290,14 +290,27 @@ train_df %&gt;% ggplot(aes(x = SalePrice)) +
 <li>take a look at the coefficient,</li>
 </ul>
 <p><strong>ANSWER:</strong></p>
+<pre class="r"><code>library(broom)
+x &lt;- rep(0, length(train_df$SalePrice))
+sales_lm &lt;- lm(formula = SalePrice ~ x, data = train_df)
+tidy(sales_lm)</code></pre>
+<pre><code>##          term estimate std.error statistic p.value
+## 1 (Intercept) 180921.2  2079.105  87.01877       0</code></pre>
 <ul>
 <li>compare the coefficient to the average value of SalePrice, and</li>
 </ul>
-<p><strong>ANSWER:</strong></p>
+<p><strong>ANSWER:</strong> They match exactly.</p>
+<pre class="r"><code>mean(train_df$SalePrice)</code></pre>
+<pre><code>## [1] 180921.2</code></pre>
 <ul>
 <li>take a look at the R-squared.</li>
 </ul>
-<p><strong>ANSWER:</strong></p>
+<p><strong>ANSWER:</strong> The R-squared value of 0 means that our model (simply using the mean) does not explain anything about the variability of SalePrice.</p>
+<pre class="r"><code>glance(sales_lm)</code></pre>
+<pre><code>##   r.squared adj.r.squared   sigma statistic p.value df    logLik      AIC
+## 1         0             0 79442.5        NA      NA  1 -18544.02 37092.04
+##        BIC     deviance df.residual
+## 1 37102.62 9.207911e+12        1459</code></pre>
 <hr />
 </div>
 <div id="exercise-4" class="section level3">
@@ -305,37 +318,144 @@ train_df %&gt;% ggplot(aes(x = SalePrice)) +
 <p><em>Now fit a linear regression model using GrLivArea, OverallQual, and Neighborhood as the features. Don’t forget to look at data_description.txt to understand what these variables mean. Ask yourself these questions before fitting the model:</em></p>
 <ul>
 <li>What kind of relationship will these features have with our target?</li>
-</ul>
-<p><strong>ANSWER:</strong></p>
-<ul>
 <li>Can the relationship be estimated linearly?</li>
-</ul>
-<p><strong>ANSWER:</strong></p>
-<ul>
 <li>Are these good features, given the problem we are trying to solve?</li>
 </ul>
-<p><strong>ANSWER:</strong></p>
+<p><strong>ANSWER:</strong> GrLivArea is a numeric variable representing the “Above grade (ground) living area square feet”; OverallQual is a numeric variable that “Rates the overall material and finish of the house”; and Neighborhood is a categorical variable representing city neighborhood. Without knowing more about how the different neighborhoods relate to each other, my expectation is that Neighborhood will not be a good feature to add to the model because it has too many values and we do not know enough about the neighborhoods to order them.</p>
+<pre class="r"><code>#GrLivArea: Above grade (ground) living area square feet
+#OverallQual: Rates the overall material and finish of the house
+#Neighborhood: Physical locations within Ames city limits
+train_df &lt;- train_df %&gt;% mutate(Neighborhood_fct = factor(Neighborhood, ordered = FALSE))
+sales_mult_lm &lt;- lm(formula = SalePrice ~ GrLivArea + OverallQual + Neighborhood_fct, data = train_df)</code></pre>
 <p><em>After fitting the model, output the coefficients and the R-squared using the broom package. Answer these questions:</em></p>
-<ul>
+<ol style="list-style-type: decimal">
 <li>How would you interpret the coefficients on GrLivArea and OverallQual?</li>
-</ul>
-<p><strong>ANSWER:</strong></p>
-<ul>
 <li>How would you interpret the coefficient on NeighborhoodBrkSide?</li>
-</ul>
-<p><strong>ANSWER:</strong></p>
+</ol>
+<p><strong>ANSWERS:</strong></p>
+<ol style="list-style-type: decimal">
+<li>For every one unit increase in GrLivArea, the sale price increases, on average, by $55.56 and for every one unit increase in OverallQual, the sale price increases, on average, by $20,951.</li>
+<li>Because Neighborhood is an unordered categorical variable, the coefficient can be interpreted as a comparison to the first value in Neighborhood. Therefore, the mean price difference between NeighborhoodBrkSide and the first neighborhood (Bloomington Heights) is -$13,025.</li>
+</ol>
+<pre class="r"><code>tidy(sales_mult_lm)</code></pre>
+<pre><code>##                       term    estimate    std.error   statistic
+## 1              (Intercept) -34829.2399 11541.232315 -3.01780945
+## 2                GrLivArea     55.5645     2.498787 22.23658695
+## 3              OverallQual  20951.4249  1162.273747 18.02623948
+## 4  Neighborhood_fctBlueste -30752.8759 27697.270091 -1.11032155
+## 5   Neighborhood_fctBrDale -43358.8812 12978.523255 -3.34081778
+## 6  Neighborhood_fctBrkSide -13025.4529 10450.444653 -1.24640179
+## 7  Neighborhood_fctClearCr  24575.6351 11569.625542  2.12415129
+## 8  Neighborhood_fctCollgCr  11414.3095  9496.581581  1.20193876
+## 9  Neighborhood_fctCrawfor  14444.2502 10502.214763  1.37535278
+## 10 Neighborhood_fctEdwards -17842.9513  9985.733698 -1.78684430
+## 11 Neighborhood_fctGilbert   -892.8796  9954.350137 -0.08969743
+## 12  Neighborhood_fctIDOTRR -28178.9866 11135.583978 -2.53053514
+## 13 Neighborhood_fctMeadowV -19099.0203 12999.351487 -1.46922870
+## 14 Neighborhood_fctMitchel   2030.6121 10555.017277  0.19238359
+## 15   Neighborhood_fctNAmes  -4430.0994  9517.290569 -0.46547906
+## 16 Neighborhood_fctNoRidge  64642.9895 10939.818250  5.90896375
+## 17 Neighborhood_fctNPkVill -17807.1837 15304.007123 -1.16356347
+## 18 Neighborhood_fctNridgHt  71587.8398  9994.775058  7.16252635
+## 19  Neighborhood_fctNWAmes  -4720.6584 10079.514642 -0.46834183
+## 20 Neighborhood_fctOldTown -32080.8775  9863.373223 -3.25252596
+## 21  Neighborhood_fctSawyer  -1219.3805 10211.495047 -0.11941254
+## 22 Neighborhood_fctSawyerW    303.0986 10264.231736  0.02952960
+## 23 Neighborhood_fctSomerst  17766.9637  9829.881193  1.80744440
+## 24 Neighborhood_fctStoneBr  69954.4718 11689.508047  5.98438117
+## 25   Neighborhood_fctSWISU -36640.1517 11923.592410 -3.07291213
+## 26  Neighborhood_fctTimber  29905.8114 10829.232809  2.76158172
+## 27 Neighborhood_fctVeenker  47106.8929 14337.857486  3.28549039
+##         p.value
+## 1  2.591005e-03
+## 2  2.375376e-94
+## 3  1.238994e-65
+## 4  2.670468e-01
+## 5  8.568095e-04
+## 6  2.128206e-01
+## 7  3.382834e-02
+## 8  2.295858e-01
+## 9  1.692371e-01
+## 10 7.417398e-02
+## 11 9.285402e-01
+## 12 1.149517e-02
+## 13 1.419903e-01
+## 14 8.474690e-01
+## 15 6.416592e-01
+## 16 4.294924e-09
+## 17 2.447947e-01
+## 18 1.262091e-12
+## 19 6.396114e-01
+## 20 1.170466e-03
+## 21 9.049653e-01
+## 22 9.764463e-01
+## 23 7.090264e-02
+## 24 2.740136e-09
+## 25 2.159781e-03
+## 26 5.825641e-03
+## 27 1.042655e-03</code></pre>
+<pre class="r"><code>glance(sales_mult_lm)</code></pre>
+<pre><code>##   r.squared adj.r.squared    sigma statistic p.value df    logLik      AIC
+## 1 0.7868484      0.782981 37008.52  203.4583       0 27 -17415.62 34887.25
+##        BIC     deviance df.residual
+## 1 35035.26 1.962681e+12        1433</code></pre>
 <ul>
 <li>Are the features significant?</li>
 </ul>
-<p><strong>ANSWER:</strong></p>
+<p><strong>ANSWER:</strong> To answer this, I prefer the summary() command, which more clearly highlights which features are significant at different p-values. GrLivArea and OverallQual are significant at the 0.000 level. Depending on how we define our significance cut off, certain Neighborhood values are significant, but several are not even at generous thresholds.</p>
+<pre class="r"><code>summary(sales_mult_lm)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = SalePrice ~ GrLivArea + OverallQual + Neighborhood_fct, 
+##     data = train_df)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -310337  -17569    -444   16022  275856 
+## 
+## Coefficients:
+##                           Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)             -34829.240  11541.232  -3.018 0.002591 ** 
+## GrLivArea                   55.565      2.499  22.237  &lt; 2e-16 ***
+## OverallQual              20951.425   1162.274  18.026  &lt; 2e-16 ***
+## Neighborhood_fctBlueste -30752.876  27697.270  -1.110 0.267047    
+## Neighborhood_fctBrDale  -43358.881  12978.523  -3.341 0.000857 ***
+## Neighborhood_fctBrkSide -13025.453  10450.445  -1.246 0.212821    
+## Neighborhood_fctClearCr  24575.635  11569.626   2.124 0.033828 *  
+## Neighborhood_fctCollgCr  11414.309   9496.582   1.202 0.229586    
+## Neighborhood_fctCrawfor  14444.250  10502.215   1.375 0.169237    
+## Neighborhood_fctEdwards -17842.951   9985.734  -1.787 0.074174 .  
+## Neighborhood_fctGilbert   -892.880   9954.350  -0.090 0.928540    
+## Neighborhood_fctIDOTRR  -28178.987  11135.584  -2.531 0.011495 *  
+## Neighborhood_fctMeadowV -19099.020  12999.351  -1.469 0.141990    
+## Neighborhood_fctMitchel   2030.612  10555.017   0.192 0.847469    
+## Neighborhood_fctNAmes    -4430.099   9517.291  -0.465 0.641659    
+## Neighborhood_fctNoRidge  64642.989  10939.818   5.909 4.29e-09 ***
+## Neighborhood_fctNPkVill -17807.184  15304.007  -1.164 0.244795    
+## Neighborhood_fctNridgHt  71587.840   9994.775   7.163 1.26e-12 ***
+## Neighborhood_fctNWAmes   -4720.658  10079.515  -0.468 0.639611    
+## Neighborhood_fctOldTown -32080.877   9863.373  -3.253 0.001170 ** 
+## Neighborhood_fctSawyer   -1219.381  10211.495  -0.119 0.904965    
+## Neighborhood_fctSawyerW    303.099  10264.232   0.030 0.976446    
+## Neighborhood_fctSomerst  17766.964   9829.881   1.807 0.070903 .  
+## Neighborhood_fctStoneBr  69954.472  11689.508   5.984 2.74e-09 ***
+## Neighborhood_fctSWISU   -36640.152  11923.592  -3.073 0.002160 ** 
+## Neighborhood_fctTimber   29905.811  10829.233   2.762 0.005826 ** 
+## Neighborhood_fctVeenker  47106.893  14337.857   3.285 0.001043 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 37010 on 1433 degrees of freedom
+## Multiple R-squared:  0.7868, Adjusted R-squared:  0.783 
+## F-statistic: 203.5 on 26 and 1433 DF,  p-value: &lt; 2.2e-16</code></pre>
 <ul>
 <li>Are the features practically significant?</li>
 </ul>
-<p><strong>ANSWER:</strong></p>
+<p><strong>ANSWER:</strong> For GrLivArea and OverallQual I would say yes, these are useful findings. I don’t think Neighborhoods is practically significant as the relationship between neighborhoods is not clear.</p>
 <ul>
 <li>Is the model a good fit?</li>
 </ul>
-<p><strong>ANSWER:</strong></p>
+<p><strong>ANSWER:</strong> The adjusted R-Squared of .78 suggests the model is a decent fit, but I would continue to do some EDA and see how other variables impact the model.</p>
 <hr />
 </div>
 <div id="exercise-6" class="section level3">
@@ -345,7 +465,33 @@ train_df %&gt;% ggplot(aes(x = SalePrice)) +
 x = rep(1:10, each = 3),
 y = x * 1.5 + 6 + rt(length(x), df = 2)
 )</code></pre>
-<p><strong>ANSWER:</strong></p>
+<p><strong>ANSWER:</strong> Both the coefficient and the R-squared values fluctuate depending on the simulation run. There does not appear to be a clear linear relationship between the two though.</p>
+<pre class="r"><code>sim1a_coef &lt;- rep(NA, 6)
+sim1a_rsqr &lt;- rep(NA, 6)
+for(i in 1:6) {
+  sim1a &lt;- tibble(
+    x = rep(1:10, each = 3),
+    y = x * 1.5 + 6 + rt(length(x), df = 2)
+    )
+  sim1a_lm &lt;- lm(formula = y ~ x, data = sim1a)
+  sim1a_coef[i] &lt;- coef(sim1a_lm)[2]
+  sim1a_rsqr[i] &lt;- glance(sim1a_lm)[[2]]
+  }
+
+tibble(
+    sim_number = c(1:6),
+    coefficient = sim1a_coef,
+    r_squared = sim1a_rsqr
+    )</code></pre>
+<pre><code>## # A tibble: 6 x 3
+##   sim_number coefficient r_squared
+##        &lt;int&gt;       &lt;dbl&gt;     &lt;dbl&gt;
+## 1          1        1.54     0.930
+## 2          2        1.33     0.629
+## 3          3        1.34     0.887
+## 4          4        1.35     0.791
+## 5          5        1.43     0.817
+## 6          6        1.57     0.670</code></pre>
 </div>
 </div>
 
