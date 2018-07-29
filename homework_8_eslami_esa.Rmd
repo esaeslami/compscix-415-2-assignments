@@ -1,0 +1,49 @@
+---
+author: Esa Eslami
+date: 7/29/2018
+title: "COMPSCIX 415.2 Homework 8"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+    toc_depth: 3
+---
+
+##__Homework 7 Assignments:__##
+
+### Exercise 1
+
+*Create an R function that takes as its input argument a city name and creates a slippy leaflet map as its output.* 
+
+*The leaflet map should already be __zoomed__ in onto the city that is input into the function and should contain __markers__ for each of the bike station locations, and each marker should show the __number of bikes__ when hovered over by the mouse cursor.*
+
+*Feel free to add your own flourishes to the map.* 
+
+*On your final html document __I want to see the code and one slippy map for any of the given cities__. Do not attempt to put multiple slippy maps on your html file - it may break. Name your function map_it. To pull the data, you will use the fromJSON function (set the flatten argument to TRUE).*
+
+__ANSWER:__ 
+
+```{r ex1_q1, warning=FALSE, message=FALSE, eval=TRUE}
+#Load necessary packages
+library(tidyverse)
+library(broom)
+library(leaflet)
+library(jsonlite)
+
+#Create an R function called map_it that takes as its input argument a city name (city_name) and creates a slippy leaflet map as its output
+map_it <- function(city_name) {
+  url <- paste0("https://api.jcdecaux.com/vls/v1/stations?contract=",city_name,"&apiKey=095ad1453efb40f3ce95a612d16bddbcb2f41d68")
+  df_api <- fromJSON(url)
+  df_api_lat <- df_api$position[[1]]
+  df_api_long <- df_api$position[[2]]
+  df_api_number <- as.character(df_api$number)
+  map <- leaflet() %>%
+    addTiles() %>%
+    addMarkers(lng = df_api_long, lat = df_api_lat, data = df_api, label = df_api_number)
+  return(map)
+}
+map_it("Dublin")
+```
+
+* * *
