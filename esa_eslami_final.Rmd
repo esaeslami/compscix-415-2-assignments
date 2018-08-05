@@ -1,0 +1,71 @@
+---
+author: Esa Eslami
+date: 8/05/2018
+title: "COMPSCIX 415.2 Homework 9/Final"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: true
+    toc_depth: 4
+---
+
+```{r libraries, warning=FALSE, message=FALSE, echo=FALSE}
+library(tidyverse)
+
+```
+
+##__Final Exercises__##
+
+### Exercise 1 
+__Sampling Distributions, Functions and For Loops__
+
+*Recall that the distribution of the sample mean is approximately a Normal distribution, and that the standard error is $\frac{\sigma}{\sqrt{n}}$. This holds true regardless of the distribution of our population.*
+
+*For this problem, assume that the number of miles that a particular car can run before its battery wears out is exponentially distributed with an average of 10,000 miles. The exponential distribution looks like this:*
+
+![](C:/Users/Eeslami/Desktop/UCB Courses/X415.2 - Introduction to Data Science/compscix-415-2-assignments/exponentialdist.png){width=500px}
+
+*The exponential distribution has a rate parameter that controls how quickly the distribution decays and defines what the mean and standard deviation will be. In our case the rate = 1/10000, the mean = 10000 and the standard deviation = 10000. You can sample from this exponential distribution in R using this code:*
+
+```{r ex1_intro, warning=FALSE, message=FALSE, eval=FALSE}
+sample size
+samp_size <- 100
+# set the rate parameter
+samp_rate <- 1/10000
+# take sample
+rexp(n = samp_size, rate = samp_rate)
+```
+
+#### Step 1 
+
+*Write an R function that does the following:*
+
+* Takes a sample of size samp_size from this exponential distribution (samp_size is an input parameter for the function)
+* Calculates the mean of that sample
+* Calculates the standard deviation of that sample
+* Returns the calculated mean and standard deviation as a list
+
+__ANSWER:__ See document formatting.
+
+```{r ex1_step1, warning=FALSE, message=FALSE, echo=TRUE}
+samp_fun <- function(samp_size, samp_rate) {
+
+...your code here...
+
+stats <- list(samp_avg = samp_avg, samp_std_dev = samp_std_dev)
+return(stats)
+}
+```
+
+* * *
+
+
+
+
+
+
+
+
+
+
