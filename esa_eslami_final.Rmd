@@ -7,7 +7,7 @@ output:
     toc: true
     toc_float:
       collapsed: true
-    toc_depth: 4
+    toc_depth: 3
 ---
 
 ```{r libraries, warning=FALSE, message=FALSE, echo=FALSE}
@@ -15,9 +15,9 @@ library(tidyverse)
 
 ```
 
-##__Final Exercises__##
+#__Final Exercises__#
 
-### Exercise 1 
+## Exercise 1 
 __Sampling Distributions, Functions and For Loops__
 
 *Recall that the distribution of the sample mean is approximately a Normal distribution, and that the standard error is $\frac{\sigma}{\sqrt{n}}$. This holds true regardless of the distribution of our population.*
@@ -37,7 +37,7 @@ samp_rate <- 1/10000
 rexp(n = samp_size, rate = samp_rate)
 ```
 
-#### Step 1 
+### Step 1 
 
 *Write an R function that does the following:*
 
@@ -46,26 +46,145 @@ rexp(n = samp_size, rate = samp_rate)
 * Calculates the standard deviation of that sample
 * Returns the calculated mean and standard deviation as a list
 
-__ANSWER:__ See document formatting.
+__ANSWER:__ 
 
-```{r ex1_step1, warning=FALSE, message=FALSE, echo=TRUE}
+```{r ex1_step1, warning=FALSE, message=FALSE, eval=TRUE}
 samp_fun <- function(samp_size, samp_rate) {
-
-...your code here...
-
-stats <- list(samp_avg = samp_avg, samp_std_dev = samp_std_dev)
+  exp_samp <- rexp(n = samp_size, rate = samp_rate)
+  samp_avg = mean(exp_samp)
+  samp_std_dev = sd(exp_samp)
+  stats <- list(samp_avg = samp_avg, samp_std_dev = samp_std_dev)
 return(stats)
 }
 ```
 
 * * *
 
+### Step 2 
+
+*Then write a loop that does this:*
+
+* Runs the above function 1000 times, with samp_size = 50 and samp_rate = 1/10000
+* Saves all of the sample means in a vector called sample_means, and all of the sample standard deviations in a vector called sample_sds
+
+__ANSWER:__ 
+
+```{r ex1_step2, warning=FALSE, message=FALSE, eval=TRUE}
+n <- 1000 # number of times we want to run the function
+sample_means <- rep(NA, n) # empty vector for saving sample means
+sample_sds <- rep(NA, n) # empty vector for saving sample standard deviations
+
+for(i in 1:n) {
+  x <- samp_fun(50, 1/10000) # save sample mean and sd
+  sample_means[i] <- x$samp_avg # add sample mean to vector
+  sample_sds[i] <- x$samp_std_dev # add sample sd to vector
+}
+
+# save output in a tibble
+exp_samp_df <- tibble(
+  sample_means, 
+  sample_sds
+) 
+```
+
+* * *
+
+### Step 3 
+
+*Then*
+
+* plot your sample means as a histogram
+* output the standard deviation of your sample means
+* calculate the theoretical standard error ($\sigma$ = 10000, n = sample size)
+* calculate the mean of the sample standard deviations and use this to calculate the empirical standard error
+
+__ANSWER:__ 
+
+```{r ex1_step3, warning=FALSE, message=FALSE, eval=TRUE}
+# Plot the sample means
+exp_samp_df %>% ggplot(aes(x = sample_means)) +
+  geom_histogram()
+
+# Standard deviation of the sample means
+sd(exp_samp_df$sample_means)
+
+# Calculate the theoretical standard error
+10000/sqrt(50)
+
+# Calculate the mean of the sample standard deviations and use this to calculate the empirical standard error
+mean(exp_samp_df$sample_sds)/sqrt(50)
+```
+
+* * *
+
+### Step 4 
+
+*Repeat STEP 2 and STEP 3 using a sample size of 500 and 5000.*
+
+__ANSWER:__ 
+
+```{r ex1_step4_a, warning=FALSE, message=FALSE, eval=TRUE}
+n <- 1000 
+sample_means <- rep(NA, n) 
+sample_sds <- rep(NA, n) 
+
+# Using sample size of 500
+for(i in 1:n) {
+  x <- samp_fun(500, 1/10000) # save sample mean and sd
+  sample_means[i] <- x$samp_avg # add sample mean to vector
+  sample_sds[i] <- x$samp_std_dev # add sample sd to vector
+}
+
+# save output in a tibble
+exp_samp_500_df <- tibble(
+  sample_means, 
+  sample_sds
+) 
+
+# Plot the sample means
+exp_samp_500_df %>% ggplot(aes(x = sample_means)) +
+  geom_histogram()
+
+# Standard deviation of the sample means
+sd(exp_samp_500_df$sample_means)
+
+# Calculate the theoretical standard error
+10000/sqrt(500)
+
+# Calculate the mean of the sample standard deviations and use this to calculate the empirical standard error
+mean(exp_samp_500_df$sample_sds)/sqrt(500)
+```
 
 
+```{r ex1_step4_b, warning=FALSE, message=FALSE, eval=TRUE}
+n <- 1000 
+sample_means <- rep(NA, n) 
+sample_sds <- rep(NA, n) 
 
+# Using sample size of 5000
+for(i in 1:n) {
+  x <- samp_fun(5000, 1/10000) # save sample mean and sd
+  sample_means[i] <- x$samp_avg # add sample mean to vector
+  sample_sds[i] <- x$samp_std_dev # add sample sd to vector
+}
 
+# save output in a tibble
+exp_samp_5000_df <- tibble(
+  sample_means, 
+  sample_sds
+) 
 
+# Plot the sample means
+exp_samp_5000_df %>% ggplot(aes(x = sample_means)) +
+  geom_histogram()
 
+# Standard deviation of the sample means
+sd(exp_samp_5000_df$sample_means)
 
+# Calculate the theoretical standard error
+10000/sqrt(5000)
 
+# Calculate the mean of the sample standard deviations and use this to calculate the empirical standard error
+mean(exp_samp_5000_df$sample_sds)/sqrt(5000)
+```
 
