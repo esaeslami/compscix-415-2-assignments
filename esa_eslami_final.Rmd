@@ -89,7 +89,7 @@ exp_samp_df <- tibble(
 
 * * *
 
-### Step 3 
+### Step 3
 
 *Then*
 
@@ -186,5 +186,72 @@ sd(exp_samp_5000_df$sample_means)
 
 # Calculate the mean of the sample standard deviations and use this to calculate the empirical standard error
 mean(exp_samp_5000_df$sample_sds)/sqrt(5000)
+```
+
+## Exercise 2 
+__Linear Regression__
+
+*For this exercise we will return to the House Prices prediction dataset that we used for HW 7. You should have already downloaded the train.csv dataset before, but if you didn't you can download it from Canvas in this week's module.*
+
+*Load the train.csv dataset into R and fit a regression model with:*
+
+* y = SalePrice
+* Features: LotArea, OverallQual, and ExterQual
+
+__ANSWER:__ 
+
+```{r ex2_load_fit, warning=FALSE, message=FALSE, eval=TRUE}
+# Load the train.csv dataset
+train_df_path <- 'C:/Users/Eeslami/Desktop/UCB Courses/X415.2 - Introduction to Data Science/compscix-415-2-assignments/train.csv'
+train_df <- read_csv(file = train_df_path)
+
+# Fit a regression model with y = SalePrice and use LotArea, OverallQual, and ExterQual as features
+sales_mult_lm <- lm(formula = SalePrice ~ LotArea + OverallQual + ExterQual, data = train_df)
+```
+
+*Answer these questions:*
+
+1. Use the broom package to output the coefficients and the R-squared
+2. Interpret the coefficient on LotArea
+3. Interpret the coefficient on ExterQualGd
+4. Compare this model to the model we fit in HW 7 with GrLivArea, OverallQual, Neighborhood. Which is the better fitting model?
+
+__ANSWERS:__ 
+
+1. See below.
+
+2. For every one unit increase in LotArea, the sale price increases, on average, by $1.45. 
+
+3. ExterQual is an unordered categorical variable, so the coefficient can be interpreted as a comparison to the first value in ExterQual. Therefore, the mean price difference between ExterQualGd and the first value (ExterQualEx) is -$71,529.
+
+4. The model we fit in HW 7 with GrLivArea, OverallQual, Neighborhood had an adjusted R-squared value of 0.78. Our model here does not fit as well, shown by the lower adjusted R-squared value of 0.69. Therefore the model fit for HW 7 is better.
+
+```{r ex2_answerQs, warning=FALSE, message=FALSE, eval=TRUE}
+# Use the broom package to output the coefficients and the R-squared
+library(broom)
+tidy(sales_mult_lm)
+glance(sales_mult_lm)
+```
+
+## Exercise 3 
+__AB Testing__
+
+*Download the ab_test_data.csv file from Canvas. This file contains two columns: version and conversion. Each row is a visitor to a webpage. The version column tells us which version of the webpage the visitor saw, and the conversion column is a binary value and equals 1 if the visitor converted (0 otherwise).*
+
+*We want to perform an AB test on this data to see if the conversion rates are different for the two versions of the webpage.*
+
+*Answer these questions:*
+
+* What proportion of visitors converted for each version of the webpage?
+* Perform the AB test in R. What is the p-value for the AB test (hypothesis test of proportions)?
+
+__ANSWER:__ 
+
+```{r ex2_load_fit, warning=FALSE, message=FALSE, eval=TRUE}
+# Load the ab_test_data.csv dataset
+ab_test_df_path <- 'C:/Users/Eeslami/Desktop/UCB Courses/X415.2 - Introduction to Data Science/compscix-415-2-assignments/ab_test_data.csv'
+ab_test_df <- read_csv(file = ab_test_df_path)
+
+
 ```
 
