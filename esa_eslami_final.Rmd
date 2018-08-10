@@ -121,7 +121,7 @@ mean(exp_samp_df$sample_sds)/sqrt(50)
 
 *Repeat STEP 2 and STEP 3 using a sample size of 500 and 5000.*
 
-__ANSWER:__ 
+__ANSWER:__ First we will repeat steps 2 and 3 using a sample size of 500:
 
 ```{r ex1_step4_a, warning=FALSE, message=FALSE, eval=TRUE}
 n <- 1000 
@@ -155,6 +155,7 @@ sd(exp_samp_500_df$sample_means)
 mean(exp_samp_500_df$sample_sds)/sqrt(500)
 ```
 
+Then we will repeat steps 2 and 3 using a sample size of 5000:
 
 ```{r ex1_step4_b, warning=FALSE, message=FALSE, eval=TRUE}
 n <- 1000 
@@ -242,16 +243,41 @@ __AB Testing__
 
 *Answer these questions:*
 
-* What proportion of visitors converted for each version of the webpage?
-* Perform the AB test in R. What is the p-value for the AB test (hypothesis test of proportions)?
+1. What proportion of visitors converted for each version of the webpage?
+2. Perform the AB test in R. What is the p-value for the AB test (hypothesis test of proportions)?
 
 __ANSWER:__ 
 
-```{r ex2_load_fit, warning=FALSE, message=FALSE, eval=TRUE}
+1. 4.2 percent of visitors converted for version A and 10 percent of visitors converted for version B.
+
+```{r ex3_1, warning=FALSE, message=FALSE, eval=TRUE}
 # Load the ab_test_data.csv dataset
 ab_test_df_path <- 'C:/Users/Eeslami/Desktop/UCB Courses/X415.2 - Introduction to Data Science/compscix-415-2-assignments/ab_test_data.csv'
 ab_test_df <- read_csv(file = ab_test_df_path)
 
+ab_test_df$conversion <- as.character(ab_test_df$conversion)
 
+ab_freq_df <- ab_test_df %>% count(version, conversion)
+
+ab_freq_df <- ab_freq_df %>% 
+  spread(key = conversion, value = n) %>%
+  rename(not_converted = '0', converted = '1') %>%
+  mutate(total = not_converted + converted,
+         prop_converted = converted/total,
+         perc_converted = paste0(round(prop_converted*100, 1), "%"))
+
+ab_freq_df
 ```
 
+2. The p-value is very small (less than 0.000), which tells us that the conversion rates for Version A and B are significantly different than each other.
+
+```{r ex3_2, warning=FALSE, message=FALSE, eval=TRUE}
+samp_a <- ab_freq_df %>% filter(version == "A") %>% select(converted)
+samp_a <- samp_a[[1]]
+samp_b <- ab_freq_df %>% filter(version == "B") %>% select(converted)
+samp_b <- samp_b[[1]]
+n_a = n_b = 2000
+
+two_prop_test <- prop.test(c(samp_a, samp_b), c(n_a, n_b))
+two_prop_test$p.value
+```
